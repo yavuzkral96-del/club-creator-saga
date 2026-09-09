@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Creator Saga - FC25 Tarzı Futbol Yönetim</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Giriş Ekranı (FC25 Tarzı) -->
+    <div id="loginScreen" class="screen login-screen active">
+        <div class="login-container">
+            <div class="logo-section">
+                <h1 class="game-title">⚽ CLUB CREATOR SAGA</h1>
+                <p class="subtitle">FC25 Tarzı Futbol Yönetim Simülasyonu</p>
+            </div>
+
+            <div class="login-form">
+                <input type="text" id="playerName" placeholder="Oyuncu Adı Gir" class="input-field">
+                <select id="difficulty" class="input-field">
+                    <option value="easy">Kolay</option>
+                    <option value="medium" selected>Normal</option>
+                    <option value="hard">Zor</option>
+                </select>
+                <button onclick="startGame()" class="btn-primary">OYUNA BAŞLA</button>
+            </div>
+
+            <div class="login-footer">
+                <p>🌍 Tüm Ligler | ⚽ Gerçek Oyuncular | 💰 Transfer Pazarı</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ana Menu -->
+    <div id="mainMenu" class="screen main-menu hidden">
+        <div class="menu-container">
+            <div class="welcome-banner">
+                <h2>Hoşgeldin, <span id="playerNameDisplay"></span>!</h2>
+            </div>
+
+            <div class="menu-buttons">
+                <button onclick="goToCareerMode()" class="btn-menu">
+                    🎮 KARİYER MODU
+                </button>
+                <button onclick="goToManagerMode()" class="btn-menu">
+                    👨‍💼 TEKNİK ADAM MODU
+                </button>
+                <button onclick="goToLeagueSelection()" class="btn-menu">
+                    🏆 LİG SEÇIMI
+                </button>
+                <button onclick="goToTransferMarket()" class="btn-menu">
+                    💰 TRANSFER PAZARI
+                </button>
+                <button onclick="showSettings()" class="btn-menu">
+                    ⚙️ AYARLAR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kariyer Modu -->
+    <div id="careerMode" class="screen hidden">
+        <div class="career-container">
+            <div class="career-header">
+                <h2>🎮 KARİYER MODU</h2>
+                <button onclick="goToMainMenu()" class="btn-back">← GERİ</button>
+            </div>
+
+            <div class="career-content">
+                <div class="player-info">
+                    <h3>Oyuncu Bilgileri</h3>
+                    <p><strong>Adı:</strong> <span id="careerPlayerName"></span></p>
+                    <p><strong>Mevkisi:</strong> <span id="careerPosition"></span></p>
+                    <p><strong>Yaşı:</strong> <span id="careerAge">18</span></p>
+                    <p><strong>Takımı:</strong> <span id="careerTeam"></span></p>
+                    <p><strong>Maaş:</strong> <span id="careerSalary">0</span>€</p>
+                </div>
+
+                <div class="career-stats">
+                    <h3>Kariyer İstatistikleri</h3>
+                    <p>⚽ Maç: <span id="matchesPlayed">0</span></p>
+                    <p>⚽ Gol: <span id="goalsScored">0</span></p>
+                    <p>🎯 Asist: <span id="assists">0</span></p>
+                    <p>⭐ Puan: <span id="careerRating">50</span></p>
+                </div>
+
+                <div class="mevki-selection">
+                    <h3>Mevki Seçin</h3>
+                    <div class="position-buttons">
+                        <button onclick="selectPosition('Kaleci')" class="btn-position">🥅 Kaleci</button>
+                        <button onclick="selectPosition('Stoper')" class="btn-position">🛡️ Stoper</button>
+                        <button onclick="selectPosition('Fullback')" class="btn-position">🔄 Fullback</button>
+                        <button onclick="selectPosition('Orta Saha')" class="btn-position">🔄 Orta Saha</button>
+                        <button onclick="selectPosition('Forvet')" class="btn-position">⚽ Forvet</button>
+                    </div>
+                </div>
+
+                <button onclick="playMatch()" class="btn-primary">MAÇI SİMÜLE ET</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teknik Adam Modu -->
+    <div id="managerMode" class="screen hidden">
+        <div class="manager-container">
+            <div class="manager-header">
+                <h2>👨‍💼 TEKNİK ADAM MODU</h2>
+                <button onclick="goToMainMenu()" class="btn-back">← GERİ</button>
+            </div>
+
+            <div class="manager-content">
+                <div class="team-info">
+                    <h3>Takım Bilgileri</h3>
+                    <p><strong>Takım:</strong> <span id="managerTeamName"></span></p>
+                    <p><strong>Liga:</strong> <span id="managerLeague"></span></p>
+                    <p><strong>Bütçe:</strong> <span id="managerBudget">0</span>€</p>
+                    <p><strong>Mevcut Sıra:</strong> <span id="managerRanking">1</span></p>
+                </div>
+
+                <div class="manager-actions">
+                    <h3>Yönetim İşlemleri</h3>
+                    <button onclick="goToTransferMarket()" class="btn-action">💰 Transfer Yap</button>
+                    <button onclick="setupLineup()" class="btn-action">🔄 Diziliş Değiştir</button>
+                    <button onclick="goToUpcomingMatches()" class="btn-action">📅 Yaklaşan Maçlar</button>
+                    <button onclick="viewTeamPlayers()" class="btn-action">👥 Takım Oyuncuları</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lig Seçimi -->
+    <div id="leagueSelection" class="screen hidden">
+        <div class="league-container">
+            <div class="league-header">
+                <h2>🏆 LİG SEÇIMI</h2>
+                <button onclick="goToMainMenu()" class="btn-back">← GERİ</button>
+            </div>
+
+            <div class="league-content">
+                <div class="region-section">
+                    <h3>🇹🇷 TÜRKİYE</h3>
+                    <div class="league-list">
+                        <button onclick="selectLeague('TR', 'Süper Lig')" class="btn-league">Süper Lig</button>
+                        <button onclick="selectLeague('TR', '1. Lig')" class="btn-league">1. Lig</button>
+                        <button onclick="selectLeague('TR', '2. Lig')" class="btn-league">2. Lig</button>
+                    </div>
+                </div>
+
+                <div class="region-section">
+                    <h3>🇪🇸 İSPANYA</h3>
+                    <div class="league-list">
+                        <button onclick="selectLeague('ES', 'La Liga')" class="btn-league">La Liga</button>
+                        <button onclick="selectLeague('ES', 'Segunda División')" class="btn-league">Segunda División</button>
+                    </div>
+                </div>
+
+                <div class="region-section">
+                    <h3>🇬🇧 İNGİLTERE</h3>
+                    <div class="league-list">
+                        <button onclick="selectLeague('EN', 'Premier League')" class="btn-league">Premier League</button>
+                        <button onclick="selectLeague('EN', 'Championship')" class="btn-league">Championship</button>
+                    </div>
+                </div>
+
+                <div class="region-section">
+                    <h3>🇮🇹 İTALYA</h3>
+                    <div class="league-list">
+                        <button onclick="selectLeague('IT', 'Serie A')" class="btn-league">Serie A</button>
+                        <button onclick="selectLeague('IT', 'Serie B')" class="btn-league">Serie B</button>
+                    </div>
+                </div>
+
+                <div class="region-section">
+                    <h3>🇩🇪 ALMANYA</h3>
+                    <div class="league-list">
+                        <button onclick="selectLeague('DE', 'Bundesliga')" class="btn-league">Bundesliga</button>
+                        <button onclick="selectLeague('DE', '2. Bundesliga')" class="btn-league">2. Bundesliga</button>
+                    </div>
+                </div>
+
+                <div class="region-section">
+                    <h3>🇫🇷 FRANSA</h3>
+                    <div class="league-list">
+                        <button onclick="selectLeague('FR', 'Ligue 1')" class="btn-league">Ligue 1</button>
+                        <button onclick="selectLeague('FR', 'Ligue 2')" class="btn-league">Ligue 2</button>
+                    </div>
+                </div>
+
+                <div class="region-section">
+                    <h3>🇺🇸 AMERİKA</h3>
+                    <div class="league-list">
+                        <button onclick="selectLeague('US', 'MLS')" class="btn-league">MLS</button>
+                    </div>
+                </div>
+
+                <div class="region-section">
+                    <h3>🇧🇷 BREZILYA</h3>
+                    <div class="league-list">
+                        <button onclick="selectLeague('BR', 'Série A')" class="btn-league">Série A</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Pazarı -->
+    <div id="transferMarket" class="screen hidden">
+        <div class="market-container">
+            <div class="market-header">
+                <h2>💰 TRANSFER PAZARI</h2>
+                <p>Bütçe: <span id="marketBudget">0</span>€</p>
+                <button onclick="goToMainMenu()" class="btn-back">← GERİ</button>
+            </div>
+
+            <div class="market-filters">
+                <input type="text" id="playerSearch" placeholder="Oyuncu Adı Ara..." class="input-field">
+                <select id="positionFilter" class="input-field">
+                    <option value="">Tüm Mevkiler</option>
+                    <option value="Kaleci">Kaleci</option>
+                    <option value="Stoper">Stoper</option>
+                    <option value="Fullback">Fullback</option>
+                    <option value="Orta Saha">Orta Saha</option>
+                    <option value="Forvet">Forvet</option>
+                </select>
+                <button onclick="filterPlayers()" class="btn-primary">ARA</button>
+            </div>
+
+            <div id="playerList" class="player-list">
+                <!-- Oyuncular buraya dinamik olarak yüklenecek -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Maç Simülasyonu -->
+    <div id="matchSimulation" class="screen hidden">
+        <div class="match-container">
+            <div class="match-header">
+                <h2>⚽ MAÇI SİMÜLE ET</h2>
+            </div>
+
+            <div class="match-modes">
+                <button onclick="startQuickMatch()" class="btn-mode">
+                    ⚡ HIZLI MOD (2 dakika)
+                </button>
+                <button onclick="startDetailedMatch()" class="btn-mode">
+                    🎮 DETAYLI MOD (Top Kontrol)
+                </button>
+            </div>
+
+            <div id="matchResult" class="match-result hidden">
+                <h3>MAÇIN SONUCU</h3>
+                <div class="score-display">
+                    <div class="team-score">
+                        <p id="homeTeam"></p>
+                        <h2 id="homeScore">0</h2>
+                    </div>
+                    <p class="vs">VS</p>
+                    <div class="team-score">
+                        <p id="awayTeam"></p>
+                        <h2 id="awayScore">0</h2>
+                    </div>
+                </div>
+
+                <div class="match-stats">
+                    <p>⚽ Sizin Gol: <span id="yourGoals">0</span></p>
+                    <p>🎯 Sizin Asist: <span id="yourAssists">0</span></p>
+                    <p>⭐ Sizin Puan: <span id="yourRating">0</span></p>
+                </div>
+
+                <button onclick="goToMainMenu()" class="btn-primary">ANA MENÜYE DÖN</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
